@@ -1,0 +1,124 @@
+openapi: 3.0.1
+info:
+  title: Fatos sobre Chuck Norris
+  description: API responsável por trazer informações relevantes (ou não) sobre o Chuck Norris
+  version: 1.0.0
+  termsOfService: https://api.chucknorris.io/privacy
+  contact:
+    name: Documentação oficial
+    url: https://github.com/chucknorris-io
+externalDocs:
+  description: Swagger desenvolvidor por A. Sousa
+  url: https://github.com/Alanssrv
+servers: 
+- url: https://api.chucknorris.io/jokes
+  description: Chuck Norris - Jokes
+paths:
+  /categories:
+    get:
+      summary: Listar categorias disponíveis
+      description: Categoria é referente ao contexto da curiosidade sobre o Chuck Norris
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                example: ["animal","career","celebrity",...]
+                items:
+                  type: string
+  /random:
+    get:
+      summary: Buscar um fato aleatório sobre o Chuck Norris
+      parameters:
+        - name: category
+          description: Referente a categoria da curiosidade sobre o Chuck Norris
+          examples:
+            uma-categ:
+              summary: Uma única categoria
+              value: "movie"
+            n-categ:
+              summary: Mais de uma categoria
+              value: "food,history"
+          in: query
+          schema:
+            type: string
+          required: false
+        - name: name
+          description: "Substitua Chuck Norris pelo valor enviado no campo"
+          example: "Cleiton"
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FatoChuckNorris"
+  /search:
+    parameters:
+    - name: query
+      in: query
+      schema:
+        type: string
+      required: true
+      example: tesla
+    get:
+      summary: Listar n curiosidade sobre o Chuck Norris a partir de um termo
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    example: 1
+                  result:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FatoChuckNorris"
+# security: 
+# - authorization: []
+components:
+  schemas:
+    FatoChuckNorris:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+            example: ""
+        created_at:
+          type: string
+          example: "2020-01-05 13:42:19.897976"
+          format: date
+        icon_url:
+          type: string
+          example: "https://assets.chucknorris.host/img/avatar/chuck-norris.png"
+          format: uri-template
+        id:
+          type: string
+          example: "lzsVW34YQ8e2tZiaVVptvg"
+        update_at:
+          type: string
+          example: "2020-01-05 13:42:19.897976"
+          format: date
+        url:
+          type: string
+          example: https://api.chucknorris.io/jokes/lzsVW34YQ8e2tZiaVVptvg
+          format: uri-template
+        value:
+          type: string
+          example: "Chuck Norris can use the simple gesture of pointing to perform multiple tasks. These include: Shooting down a plane Increasing a woman's cup sie b an exponential amount Pulling off a 360 no-scope Simulating the usage of a 5-iron Changing the channel to exactly what he wants"
+  # securitySchemes:
+  #   authorization:
+  #     type: http
+  #     scheme: bearer
